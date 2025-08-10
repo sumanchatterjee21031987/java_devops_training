@@ -1,4 +1,4 @@
-name: CI_Non_containerization_build
+name: CI Non containerization build
 
 on:
  workflow_dispatch:
@@ -48,7 +48,7 @@ jobs:
     - name: Upload build artifact
       uses: actions/upload-artifact@v4
       with:
-        name: spring-boot-app-${{ github.run_number }}
+        name: spring-boot-app
         path: staging/
         
     - name: Print Build Metadata
