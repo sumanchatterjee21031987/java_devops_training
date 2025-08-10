@@ -48,7 +48,7 @@ jobs:
     - name: Upload build artifact
       uses: actions/upload-artifact@v4
       with:
-        name: spring-boot-app
+        name: package
         path: staging/
         
     - name: Print Build Metadata
