@@ -1,30 +1,44 @@
 name: CI Maven Project
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
 
 jobs:
- CI_Non_conterization_build: 
-  runs-on: ubuntu-latest
-  steps: 
-   - name: Checkout Code
-     uses: actions/checkout@v4.2.0
-   - name: Setup Java JDK
-     uses: actions/setup-java@v3.14.1
-     with:
-      java-version: 17
-      distribution: microsoft
-   - name: Build using Maven
-     run: mvn --batch-mode --update-snapshots verify
-   - run: mkdir staging && cp target/*.jar staging
-   - name: Upload a Build Artifact
-     uses: actions/upload-artifact@v4.6.2
-     with:
-      name: Package
-      path: staging
-      
-     
-     
-      
-     
-     
-   
+  CI_Non_conterization_build: 
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps: 
+      - name: Checkout Code
+        uses: actions/checkout@v4.2.0
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.14.1
+        with:
+          java-version: 17
+          distribution: microsoft
+
+      - name: Build using Maven
+        run: mvn --batch-mode --update-snapshots verify
+
+      - name: Create staging directory and copy JAR
+        run: mkdir staging && cp target/*.jar staging
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: Package
+          path: staging
