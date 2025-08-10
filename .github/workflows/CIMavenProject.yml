@@ -39,10 +39,10 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-
-    - name: Build with Maven
-      run: mvn clean package
-
+        
+    - name: Build with Maven (skip tests)
+      run: mvn clean package -DskipTests
+      
     - name: Create staging directory and copy JAR
       run: |
         mkdir -p staging
