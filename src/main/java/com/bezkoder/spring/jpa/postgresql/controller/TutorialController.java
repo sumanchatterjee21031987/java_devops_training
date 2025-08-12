@@ -29,6 +29,18 @@ public class TutorialController {
 	@Autowired
 	TutorialRepository tutorialRepository;
 
+	
+@GetMapping("/hi")
+public ResponseEntity<Map<String, String>> getHello() {
+    Map<String, String> response = new HashMap<>();
+    response.put("name", "Suman Chatterjee");
+    response.put("address", "Vijayawada");
+    response.put("message", "Welcome to the Spring Boot app!");
+
+    return ResponseEntity.ok(response);
+}
+
+
 	@GetMapping("/tutorials")
 	public ResponseEntity<List<Tutorial>> getAllTutorials(@RequestParam(required = false) String title) {
 		try {
